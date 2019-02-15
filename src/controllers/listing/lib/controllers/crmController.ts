@@ -15,7 +15,7 @@ export class AccountController {
       res.json(account);
     });
   }
-  public getFlights(req: Request, res: Response) {
+  public getAccount(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
     Account.find({}, (err, account) => {
       if (err) {
@@ -26,27 +26,7 @@ export class AccountController {
       }
     });
   }
-  public searchFlights(req: Request, res: Response) {
-    res.setHeader("Content-Type", "application/json");
-    let query = {
-      $and:[{
-        'Year': req.body.Year,
-        'Month': req.body.Month,
-        'DayofMonth': req.body.DayOfMonth,
-        'Origin': req.body.origin,
-        'Dest': req.body.dest
-      }]
-    };
-    Account.find( query , (err, account) => {
-      if (err) {
-        res.status(404).json({ err });
-        return;
-      } else {
-        res.status(200).send(account);
-      }
-    });
-  }
-  public getFlightById(req: Request, res: Response) {
+  public getAccountById(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
     Account.findById(req.params.ID, (err, account) => {
       if (err) {
@@ -57,7 +37,7 @@ export class AccountController {
       }
     });
   }
-  public updateFlight(req: Request, res: Response) {
+  public updateAccount(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
     Account.findOneAndUpdate(
       { _id: req.params.ID },
@@ -73,7 +53,7 @@ export class AccountController {
     );
   }
 
-  public deleteFlight(req: Request, res: Response) {
+  public deleteAccount(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
     Account.deleteOne({ _id: req.params.ID }, err => {
       if (err) {
