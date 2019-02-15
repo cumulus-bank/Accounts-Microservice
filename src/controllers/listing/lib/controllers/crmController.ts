@@ -50,26 +50,6 @@ export class AccountController {
     });
   }
 
-  public test(req: Request, res: Response) {
-    res.setHeader("Content-Type", "application/json");
-    Account.find(
-      {
-        Billing: [
-          {
-            _id: req.params.ID
-          }
-        ]
-      },
-      (err, account) => {
-        if (err) {
-          res.status(404).json({ err });
-          return;
-        } else {
-          res.status(200).send(account);
-        }
-      }
-    );
-  }
   public updateAccount(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
     Account.findOneAndUpdate(
