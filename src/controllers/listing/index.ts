@@ -49,6 +49,14 @@ class ListingMongoController {
       this.accountController.paybill
     );
 
+    this.router.post(
+      "/balanceUpdate",
+      (req: Request, res: Response, next: NextFunction) => {
+        next();
+      },
+      this.accountController.balanceUpdate
+    );
+
     this.router.get(
       "/listAccount/:ID",
       (_, res: Response, next: NextFunction) => {

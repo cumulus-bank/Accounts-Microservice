@@ -96,6 +96,21 @@ export class AccountController {
     );
   }
 
+  public balanceUpdate(req: Request, res: Response) {
+    res.setHeader("Content-Type", "application/json");
+    Account.update(
+      { "Account._id": req.body.ID },
+      { $set: {"Account.$.Balance": req.body.balance } },
+      (err, account) => {
+        if (err) {
+          res.status(404).json({ err });
+          return;
+        }
+        res.json(account);
+      }
+    );
+  }
+
   public deleteAccount(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
     Account.deleteOne({ _id: req.params.ID }, err => {
