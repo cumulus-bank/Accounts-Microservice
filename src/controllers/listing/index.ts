@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { AccountController } from "../listing/lib/controllers/crmController";
 import "reflect-metadata";
 class ListingMongoController {
-  public flightController: FlightController = new FlightController();
+  public accountController: AccountController = new AccountController();
   public router: Router;
 
   constructor() {
@@ -17,51 +17,43 @@ class ListingMongoController {
     });
 
     this.router.get(
-      "/listFlights",
+      "/listAccount",
       (req: Request, res: Response, next: NextFunction) => {
         next();
       },
-      this.flightController.getFlights
+      this.accountController.getAccount
     );
 
     this.router.post(
-      "/listFlights",
+      "/listAccount",
       (req: Request, res: Response, next: NextFunction) => {
         next();
       },
-      this.flightController.addNewFlight
-    );
-
-    this.router.post(
-      "/searchFlights",
-      (req: Request, res: Response, next: NextFunction) => {
-        next();
-      },
-      this.flightController.searchFlights
+      this.accountController.addNewAccount
     );
 
     this.router.get(
-      "/listFlights/:ID",
+      "/listAccount/:ID",
       (_, res: Response, next: NextFunction) => {
         next();
       },
-      this.flightController.getFlightById
+      this.accountController.getAccountById
     );
 
     this.router.put(
-      "/listFlights/:ID",
+      "/listAccount/:ID",
       (_, res: Response, next: NextFunction) => {
         next();
       },
-      this.flightController.updateFlight
+      this.accountController.updateAccount
     );
 
     this.router.delete(
-      "/listFlights/:ID",
+      "/listAccount/:ID",
       (_, res: Response, next: NextFunction) => {
         next();
       },
-      this.flightController.deleteFlight
+      this.accountController.deleteAccount
     );
   }
 }
