@@ -40,6 +40,14 @@ class ListingMongoController {
       this.accountController.getAccountById
     );
 
+    this.router.get(
+      "/listAccountID/:ID",
+      (_, res: Response, next: NextFunction) => {
+        next();
+      },
+      this.accountController.getAccountByID
+    );
+
     this.router.put(
       "/listAccount/:ID",
       (_, res: Response, next: NextFunction) => {
