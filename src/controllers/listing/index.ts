@@ -57,6 +57,14 @@ class ListingMongoController {
       this.accountController.balanceUpdate
     );
 
+    this.router.post(
+      "/transaction",
+      (req: Request, res: Response, next: NextFunction) => {
+        next();
+      },
+      this.accountController.addTransaction
+    );
+
     this.router.get(
       "/listAccount/:ID",
       (_, res: Response, next: NextFunction) => {

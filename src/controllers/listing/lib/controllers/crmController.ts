@@ -100,7 +100,33 @@ export class AccountController {
     res.setHeader("Content-Type", "application/json");
     Account.update(
       { "Account._id": req.body.ID },
-      { $set: {"Account.$.Balance": req.body.balance } },
+      { $set: { "Account.$.Balance": req.body.balance } },
+      (err, account) => {
+        if (err) {
+          res.status(404).json({ err });
+          return;
+        }
+        res.json(account);
+      }
+    );
+  }
+
+  public addTransaction(req: Request, res: Response) {
+    res.setHeader("Content-Type", "application/json");
+    Account.update(
+      { _id: req.body.ID },
+      {
+        $push: {
+          Transaction: {
+            "Product":req.body.Product,
+            "Price":req.body.Price,
+            "AccountID":req.body.AccountID,
+            "AccountName": req.body.AccountName,
+            "Type":req.body.Type,
+            "Date":req.body.Date
+          }
+        }
+      },
       (err, account) => {
         if (err) {
           res.status(404).json({ err });
