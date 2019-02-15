@@ -32,6 +32,23 @@ class ListingMongoController {
       this.accountController.addNewAccount
     );
 
+
+    this.router.post(
+      "/activate",
+      (req: Request, res: Response, next: NextFunction) => {
+        next();
+      },
+      this.accountController.activate
+    );
+
+    this.router.post(
+      "/bill",
+      (req: Request, res: Response, next: NextFunction) => {
+        next();
+      },
+      this.accountController.paybill
+    );
+
     this.router.get(
       "/listAccount/:ID",
       (_, res: Response, next: NextFunction) => {
@@ -47,6 +64,7 @@ class ListingMongoController {
       },
       this.accountController.getAccountByID
     );
+
 
     this.router.put(
       "/listAccount/:ID",

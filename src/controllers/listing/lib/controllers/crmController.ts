@@ -40,7 +40,7 @@ export class AccountController {
 
   public getAccountByID(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
-    Account.find({ID:req.params.ID}, (err, account) => {
+    Account.find({ ID: req.params.ID }, (err, account) => {
       if (err) {
         res.status(404).json({ err });
         return;
@@ -49,18 +49,69 @@ export class AccountController {
       }
     });
   }
+
+  public test(req: Request, res: Response) {
+    res.setHeader("Content-Type", "application/json");
+    Account.find(
+      {
+        Billing: [
+          {
+            _id: req.params.ID
+          }
+        ]
+      },
+      (err, account) => {
+        if (err) {
+          res.status(404).json({ err });
+          return;
+        } else {
+          res.status(200).send(account);
+        }
+      }
+    );
+  }
   public updateAccount(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
     Account.findOneAndUpdate(
       { _id: req.params.ID },
       req.body,
       { new: true },
-      (err, flight) => {
+      (err, account) => {
         if (err) {
           res.status(404).json({ err });
           return;
         }
-        res.json(flight);
+        res.json(account);
+      }
+    );
+  }
+
+  public activate(req: Request, res: Response) {
+    res.setHeader("Content-Type", "application/json");
+    Account.update(
+      { "Account._id": req.body.ID },
+      { $set: { "Account.$.Activate": true, "Account.$.Balance": 10000 } },
+      (err, account) => {
+        if (err) {
+          res.status(404).json({ err });
+          return;
+        }
+        res.json(account);
+      }
+    );
+  }
+
+  public paybill(req: Request, res: Response) {
+    res.setHeader("Content-Type", "application/json");
+    Account.update(
+      { "Billing._id": req.body.ID },
+      { $set: { "Billing.$.Payed": true, "Billing.$.Price": 0 } },
+      (err, account) => {
+        if (err) {
+          res.status(404).json({ err });
+          return;
+        }
+        res.json(account);
       }
     );
   }
