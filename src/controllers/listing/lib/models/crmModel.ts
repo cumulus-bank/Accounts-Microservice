@@ -10,6 +10,7 @@ const Billing = new Schema({
 const Transaction = new Schema({
     Product: String,
     Price: Number,
+    AccountID: String,
     AccountName: String,
     Type: String,
     Date: String
