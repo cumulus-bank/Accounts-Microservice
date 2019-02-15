@@ -1,28 +1,28 @@
 import * as mongoose from "mongoose";
-import { FlightSchema } from "../models/crmModel";
+import { AccountSchema } from "../models/crmModel";
 import { Request, Response } from "express";
 
-const Flight = mongoose.model("Flight", FlightSchema);
-export class FlightController {
-  public addNewFlight(req: Request, res: Response) {
+const Account = mongoose.model("Account", AccountSchema);
+export class AccountController {
+  public addNewAccount(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
-    let newFlight = new Flight(req.body);
-    newFlight.save((err, flight) => {
+    let newAccount = new Account(req.body);
+    newAccount.save((err, account) => {
       if (err) {
         res.status(404).json({ err });
         return;
       }
-      res.json(flight);
+      res.json(account);
     });
   }
   public getFlights(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
-    Flight.find({}, (err, flight) => {
+    Account.find({}, (err, account) => {
       if (err) {
         res.status(404).json({ err });
         return;
       } else {
-        res.status(200).send(flight);
+        res.status(200).send(account);
       }
     });
   }
@@ -37,29 +37,29 @@ export class FlightController {
         'Dest': req.body.dest
       }]
     };
-    Flight.find( query , (err, flight) => {
+    Account.find( query , (err, account) => {
       if (err) {
         res.status(404).json({ err });
         return;
       } else {
-        res.status(200).send(flight);
+        res.status(200).send(account);
       }
     });
   }
   public getFlightById(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
-    Flight.findById(req.params.ID, (err, flight) => {
+    Account.findById(req.params.ID, (err, account) => {
       if (err) {
         res.status(404).json({ err });
         return;
       } else {
-        res.status(200).send(flight);
+        res.status(200).send(account);
       }
     });
   }
   public updateFlight(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
-    Flight.findOneAndUpdate(
+    Account.findOneAndUpdate(
       { _id: req.params.ID },
       req.body,
       { new: true },
@@ -75,7 +75,7 @@ export class FlightController {
 
   public deleteFlight(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
-    Flight.deleteOne({ _id: req.params.ID }, err => {
+    Account.deleteOne({ _id: req.params.ID }, err => {
       if (err) {
         res.status(404).json({ err });
         return;

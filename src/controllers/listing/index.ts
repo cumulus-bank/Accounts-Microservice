@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
-import { FlightController } from "../listing/lib/controllers/crmController";
+import { AccountController } from "../listing/lib/controllers/crmController";
 import "reflect-metadata";
 class ListingMongoController {
   public flightController: FlightController = new FlightController();
