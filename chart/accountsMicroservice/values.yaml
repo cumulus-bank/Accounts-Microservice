@@ -58,12 +58,12 @@ envOfConfigmaps:
   envMONGOPORT:
     name: MONGOPORT
     configMapKeyRef:
-      name: env-database
+      name: accountmicroservice
       key: MONGOPORT
   envHOSTNAMEMONGODB:
     name: HOSTNAMEMONGODB
     configMapKeyRef:
-      name: env-database
+      name: accountmicroservice
       key: HOSTNAMEMONGODB
 
 
