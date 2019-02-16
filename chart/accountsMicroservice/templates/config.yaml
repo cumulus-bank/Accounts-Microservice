@@ -5,4 +5,4 @@ metadata:
   namespace: default
 data:
   MONGOPORT: '27017'
-  HOSTNAMEMONGODB: 'accountmicroservice-ibm-mongodb-dev.default'
+  HOSTNAMEMONGODB: 'cumulesmongo-ibm-mongodb-dev.default'
