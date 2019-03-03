@@ -18,11 +18,18 @@ const Transaction = new Schema({
 const AccountInfoSchema = new Schema({
     Activate: Boolean,
     Balance: Number,
+    CuurentSpending: Number,
+    AccountName: String
+});
+const CurrentAccount = new Schema({
+    Balance: Number,
+    CuurentSpending: Number,
     AccountName: String
 });
 export const AccountSchema = new Schema({
     ID: Number,
     Account: [AccountInfoSchema],
+    CurrentAccount: [CurrentAccount],
     Transaction:[Transaction],
     Billing: [Billing]
 });
