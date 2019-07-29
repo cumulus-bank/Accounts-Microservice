@@ -47,13 +47,6 @@ envOfSecrets:
       name: accountmicroservice
       key: MONGOPASSWORD
 
-ingress:
-  metadeta:
-    name: accountsvc
-  path: /accountsvc
-  serviceName: accountsvc
-  servicePort: 7000
-
 envOfConfigmaps:
   envMONGOPORT:
     name: MONGOPORT
@@ -97,3 +90,11 @@ service:
     type: ClusterIP
     port: 7000
     targetPort: 7000
+
+imagestream:
+  name:  accountsvc
+  label: accountsvc
+
+buildconfig:
+  uri: "https://github.com/cumulus-bank/Accounts-Microservice.git"
+  branch: "master"

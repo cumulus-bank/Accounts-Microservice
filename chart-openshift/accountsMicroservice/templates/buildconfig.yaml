@@ -1,0 +1,30 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: "todoapp"
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'todoapp:latest'
+  runPolicy: Serial
+  source:
+    git:
+      ref: {{ .Values.buildconfig.branch }}
+      uri: {{ .Values.buildconfig.uri }}
+    type: Git
+  strategy:
+    dockerStrategy:
+    type: Docker
+  triggers:
+    - imageChange:
+      type: ImageChange
+    - type: ConfigChange
+    - generic:
+        secret: d15a49559c163827
+      type: Generic
+    - github:
+        secret: 78ad6a2f98d6e1b5
+      type: GitHub
