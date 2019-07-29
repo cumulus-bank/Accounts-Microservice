@@ -1,0 +1,249 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: account-microservice
+objects:
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    creationTimestamp: null
+    generation: 2
+    labels:
+      app: accountsvc
+    name: accountsvc
+  spec:
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      app: accountsvc
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: accountsvc
+        name: accountsvc
+      spec:
+        containers:
+        - env:
+          - name: MONGOUSERNAME
+            valueFrom:
+              secretKeyRef:
+                key: MONGOUSERNAME
+                name: accountmicroservice
+          - name: MONGOPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: MONGOPASSWORD
+                name: accountmicroservice
+          - name: MONGOPORT
+            valueFrom:
+              configMapKeyRef:
+                key: MONGOPORT
+                name: accountmicroservice
+          - name: HOSTNAMEMONGODB
+            valueFrom:
+              configMapKeyRef:
+                key: HOSTNAMEMONGODB
+                name: accountmicroservice
+          image: docker-registry.default.svc:5000/kubeapp/accountsvc@sha256:0a4a54273592d04c286a3e6992d49cf4e4080ac77aa46a3a78cc3f6c25df2975
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - /bin/bash -c sleep 20
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 7000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          name: accountsvc
+          ports:
+          - containerPort: 7000
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 7000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources:
+            limits:
+              cpu: 80m
+              memory: 210Mi
+            requests:
+              cpu: 50m
+              memory: 200Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - accountsvc
+        from:
+          kind: ImageStreamTag
+          name: accountsvc:latest
+          namespace: kubeapp
+        lastTriggeredImage: docker-registry.default.svc:5000/kubeapp/accountsvc@sha256:0a4a54273592d04c286a3e6992d49cf4e4080ac77aa46a3a78cc3f6c25df2975
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: accountsvc
+    name: accountsvc
+  spec:
+    ports:
+    - name: accountsvc
+      port: 7000
+      protocol: TCP
+      targetPort: 7000
+    selector:
+      app: accountsvc
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  data:
+    MONGOPASSWORD: YWRtaW4=
+    MONGOUSERNAME: YWRtaW4=
+    SECRET: aGVsbG8=
+  kind: Secret
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: accountsvc
+    name: accountmicroservice
+  type: Opaque
+- apiVersion: v1
+  data:
+    HOSTNAMEMONGODB: mongodb.kubeapp
+    MONGOPORT: "27017"
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: accountsvc
+    name: accountmicroservice
+- apiVersion: autoscaling/v1
+  kind: HorizontalPodAutoscaler
+  metadata:
+    annotations:
+      autoscaling.alpha.kubernetes.io/conditions: '[{"type":"AbleToScale","status":"False","lastTransitionTime":"2019-07-29T13:36:01Z","reason":"FailedGetScale","message":"the
+        HPA controller was unable to get the target''s current scale: deployments/scale.extensions
+        \"accountsvc\" not found"}]'
+    creationTimestamp: null
+    labels:
+      app: accountsvc
+    name: accountsvcmicroservicehpa
+  spec:
+    maxReplicas: 10
+    minReplicas: 2
+    scaleTargetRef:
+      apiVersion: extensions/v1beta1
+      kind: Deployment
+      name: accountsvc
+    targetCPUUtilizationPercentage: 80
+  status:
+    currentReplicas: 0
+    desiredReplicas: 0
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    creationTimestamp: null
+    labels:
+      app: accountsvc
+    name: accountsvc
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: accountsvc:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      git:
+        ref: master
+        uri: https://github.com/cumulus-bank/Accounts-Microservice.git
+      type: Git
+    strategy:
+      dockerStrategy: {}
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - type: ConfigChange
+    - generic:
+        secret: secret1
+      type: Generic
+    - github:
+        secret: secret2
+      type: GitHub
+  status:
+    lastVersion: 0
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      description: Keeps track of changes in the application image
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: accountsvc
+    name: accountsvc
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/kubeapp/accountsvc:latest
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ""
+  status:
+    dockerImageRepository: ""
