@@ -3,7 +3,7 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Values.hpa.metadata.name }} 
   labels:
-    app: {{ .Values.hpa.metadata.name }} 
+    app: {{ .Values.metadata.name }} 
 spec:
   maxReplicas: {{.Values.hpa.spec.maxReplicas}}
   minReplicas: {{.Values.hpa.spec.minReplicas}}                       
