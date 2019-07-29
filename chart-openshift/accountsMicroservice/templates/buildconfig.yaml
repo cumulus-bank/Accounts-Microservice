@@ -1,14 +1,16 @@
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-  name: "todoapp"
+  name: {{ .Values.buildconfig.name }}
+  labels:
+    app: {{ .Values.buildconfig.name }}
   annotations:
     openshift.io/generated-by: OpenShiftWebConsole
 spec:
   output:
     to:
       kind: ImageStreamTag
-      name: 'todoapp:latest'
+      name: {{ .Values.buildconfig.imagename }}
   runPolicy: Serial
   source:
     git:

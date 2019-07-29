@@ -98,3 +98,5 @@ imagestream:
 buildconfig:
   uri: "https://github.com/cumulus-bank/Accounts-Microservice.git"
   branch: "master"
+  name: "accountsvc"
+  imagename: "accountsvc:latest"
