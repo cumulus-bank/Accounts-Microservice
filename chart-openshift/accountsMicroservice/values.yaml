@@ -102,3 +102,9 @@ buildconfig:
   imagename: "accountsvc:latest"
   secret1: "secret1"
   secret2: "secret2"
+
+routes:
+  host: "accountsvc-kubeapp.apps.9.30.210.207.nip.io"
+  targetPort: 7000
+  name: accountsvc
+  weight: 100
