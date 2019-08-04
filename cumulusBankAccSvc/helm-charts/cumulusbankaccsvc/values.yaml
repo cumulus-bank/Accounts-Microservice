@@ -1,49 +1,115 @@
-# Default values for cumulusbankaccsvc.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-replicaCount: 1
-
+replicaCount: 2
+namespace: kubeapp
+metadata:
+ name: accountsvc 
+ label: accountsvc
+readinessProbe:
+  path: /healthz
+  port: 7000
+  initialDelaySeconds: 10
+  timeoutSeconds: 2
+  periodSeconds: 10
+mongodb:
+  host: "mongodb.kubeapp"
+  port: "27017"
+  username: "YWRtaW4="
+  password: "YWRtaW4="
+  secret: "aGVsbG8="
+livenessProbe:
+  path: /healthz
+  port: 7000
+  initialDelaySeconds: 10
+  timeoutSeconds: 2
+  periodSeconds: 10
 image:
-  repository: nginx
-  tag: stable
-  pullPolicy: IfNotPresent
+  name: accountsvc
+  imageName: "accountsvc" 
+  imagePullPolicy: Always
+  ports:
+    containerPort: 7000
+  requests:
+    cpu: "50m"
+    memory: "200Mi"
+  limits:
+    cpu: "80m"
+    memory: "210Mi"
+  maxSurge: 1
+  maxUnavailable: 0
+  lifecycle:
+    preStop:
+      command: ["/bin/bash", "-c", "sleep 20"]
 
-nameOverride: ""
-fullnameOverride: ""
+
+envOfSecrets:
+  envMONGOUSERNAME:
+    name: MONGOUSERNAME
+    secretKeyRef:
+      name: accountmicroservice
+      key: MONGOUSERNAME
+  envMONGOPASSWORD:
+    name: MONGOPASSWORD
+    secretKeyRef:
+      name: accountmicroservice
+      key: MONGOPASSWORD
+
+envOfConfigmaps:
+  envMONGOPORT:
+    name: MONGOPORT
+    configMapKeyRef:
+      name: accountmicroservice
+      key: MONGOPORT
+  envHOSTNAMEMONGODB:
+    name: HOSTNAMEMONGODB
+    configMapKeyRef:
+      name: accountmicroservice
+      key: HOSTNAMEMONGODB
+
+
+hpa:
+  metadata:
+    name: accountsvcmicroservicehpa
+  spec:
+    maxReplicas: 10
+    minReplicas: 2
+  metrics:
+    pods:
+      targetAverageValue: 20
+    resource:
+      name: cpu
+      targetAverageUtilization: 50
+    memory:
+      targetAverageUtilization: 50
+  scaleTargetRef:  
+    name: accountsvc
 
 service:
-  type: ClusterIP
-  port: 80
+  serviceMetadata:
+    name: accountsvc
+    labels:
+      app: accountsvc
+  selector:
+    selectorName: accountsvc
+  servicePortConfiguration:
+    protocol: TCP
+    name: accountsvc
+    type: ClusterIP
+    port: 7000
+    targetPort: 7000
 
-ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths: []
+imagestream:
+  name:  accountsvc
+  label: accountsvc
 
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+buildconfig:
+  uri: "https://github.com/cumulus-bank/Accounts-Microservice.git"
+  branch: "master"
+  name: "accountsvc"
+  imagename: "accountsvc:latest"
+  secret1: "secret1"
+  secret2: "secret2"
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+routes:
+  host: "accountsvc-kubeapp.apps.9.30.210.207.nip.io"
+  targetPort: 7000
+  name: accountsvc
+  weight: 100
