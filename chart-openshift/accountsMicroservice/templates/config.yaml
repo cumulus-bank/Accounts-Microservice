@@ -4,7 +4,7 @@ metadata:
   labels:
     app: {{ .Values.metadata.name }} 
   name: accountmicroservice
-  namespace: kubeapp
+  namespace: {{ .Values.namespace }} 
 data:
-  MONGOPORT: '27017'
-  HOSTNAMEMONGODB: 'mongodb.kubeapp'
+  MONGOPORT: {{ .Values.mongodb.port }} 
+  HOSTNAMEMONGODB: {{ .Values.mongodb.host }}

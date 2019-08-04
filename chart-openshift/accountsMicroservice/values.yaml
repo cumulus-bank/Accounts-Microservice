@@ -1,5 +1,5 @@
 replicaCount: 2
-
+namespace: kubeapp
 metadata:
  name: accountsvc 
  label: accountsvc
@@ -9,7 +9,12 @@ readinessProbe:
   initialDelaySeconds: 10
   timeoutSeconds: 2
   periodSeconds: 10
-
+mongodb:
+  host: "mongodb.kubeapp"
+  port: "27017"
+  username: "YWRtaW4="
+  password: "YWRtaW4="
+  secret: "aGVsbG8="
 livenessProbe:
   path: /healthz
   port: 7000
