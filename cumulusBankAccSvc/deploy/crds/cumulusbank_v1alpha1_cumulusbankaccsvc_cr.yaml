@@ -1,17 +1,12 @@
 apiVersion: cumulusbank.com/v1alpha1
 kind: CumulusBankAccSvc
 metadata:
-  name: accountsvc
-spec:
-  replicaCount: 2
-  namespace: "kubeapp"
-  mongodb: 
-    host: "mongodb.kubeapp"
-    port: "27017"
-    username: "YWRtaW4="
-    password: "YWRtaW4="
-    secret: "aGVsbG8="
-  buildconfig:
-    uri: "https://github.com/cumulus-bank/Accounts-Microservice.git"
-  routes:
-    host: "accountsvc-kubeapp.apps.9.30.210.207.nip.io"
+  name: accountsvc321
+# spec:
+#   replicaCount: 2
+#   mongodb: 
+#     host: "mongodb.kubeapp"
+#     port: "27017"
+#     username: "YWRtaW4="
+#     password: "YWRtaW4="
+#     secret: "aGVsbG8="

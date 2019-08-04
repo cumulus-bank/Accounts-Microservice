@@ -1,9 +1,9 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ .Values.hpa.metadata.name }} 
+  name: "account-svc"
   labels:
-    app: {{ .Values.metadata.name }} 
+    app: "account-svc"
 spec:
   maxReplicas: {{.Values.hpa.spec.maxReplicas}}
   minReplicas: {{.Values.hpa.spec.minReplicas}}                       

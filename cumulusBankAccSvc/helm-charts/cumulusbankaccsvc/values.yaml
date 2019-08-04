@@ -1,8 +1,8 @@
 replicaCount: 2
-namespace: kubeapp
+namespace: "kubeapp"
 metadata:
- name: accountsvc 
- label: accountsvc
+ name: accountsvc
+ label: Accountsvc
 readinessProbe:
   path: /healthz
   port: 7000
@@ -23,7 +23,7 @@ livenessProbe:
   periodSeconds: 10
 image:
   name: accountsvc
-  imageName: "accountsvc" 
+  imageName: "account-svc" 
   imagePullPolicy: Always
   ports:
     containerPort: 7000
@@ -86,7 +86,7 @@ service:
   serviceMetadata:
     name: accountsvc
     labels:
-      app: accountsvc
+      app: Accountsvc
   selector:
     selectorName: accountsvc
   servicePortConfiguration:
@@ -97,19 +97,22 @@ service:
     targetPort: 7000
 
 imagestream:
-  name:  accountsvc
-  label: accountsvc
+  name:  account-svc
+  label: Accountsvc
 
 buildconfig:
   uri: "https://github.com/cumulus-bank/Accounts-Microservice.git"
   branch: "master"
-  name: "accountsvc"
-  imagename: "accountsvc:latest"
-  secret1: "secret1"
-  secret2: "secret2"
+  name: "account-svc"
+  imagename: "account-svc:latest"
+  secret1: "secret7989791"
+  secret2: "secret7989791"
 
 routes:
   host: "accountsvc-kubeapp.apps.9.30.210.207.nip.io"
   targetPort: 7000
-  name: accountsvc
+  name: Accountsvc
   weight: 100
+
+nameOverride: ""
+fullnameOverride: ""
