@@ -2,7 +2,7 @@ replicaCount: 2
 namespace: "kubeapp"
 metadata:
  name: account-svc
- label: Accountsvc
+ label: account-svc
 readinessProbe:
   path: /healthz
   port: 7000
@@ -22,8 +22,8 @@ livenessProbe:
   timeoutSeconds: 2
   periodSeconds: 10
 image:
-  name: accountsvc
-  imageName: "account-svc:latest" 
+  name: account-svc
+  imageName: "account-svc" 
   imagePullPolicy: Always
   ports:
     containerPort: 7000
@@ -67,7 +67,7 @@ envOfConfigmaps:
 
 hpa:
   metadata:
-    name: accountsvcmicroservicehpa
+    name: account-svcmicroservicehpa
   spec:
     maxReplicas: 10
     minReplicas: 2
@@ -80,38 +80,38 @@ hpa:
     memory:
       targetAverageUtilization: 50
   scaleTargetRef:  
-    name: accountsvc
+    name: account-svc
 
 service:
   serviceMetadata:
-    name: accountsvc
+    name: account-svc
     labels:
-      app: Accountsvc
+      app: account-svc
   selector:
-    selectorName: accountsvc
+    selectorName: account-svc
   servicePortConfiguration:
     protocol: TCP
-    name: accountsvc
+    name: account-svc
     type: ClusterIP
     port: 7000
     targetPort: 7000
 
 imagestream:
   name:  account-svc
-  label: Accountsvc
+  label: account-svc
 
 buildconfig:
   uri: "https://github.com/cumulus-bank/Accounts-Microservice.git"
   branch: "master"
   name: "account-svc"
   imagename: "account-svc:latest"
-  secret1: "secret7989791"
-  secret2: "secret7989791"
+  secret1: "wsedrhjk"
+  secret2: "wsedrhjk"
 
 routes:
-  host: "accountsvc-kubeapp.apps.9.30.210.207.nip.io"
+  host: "account-svc-kubeapp.apps.9.30.210.207.nip.io"
   targetPort: 7000
-  name: Accountsvc
+  name: account-svc
   weight: 100
 
 nameOverride: ""
