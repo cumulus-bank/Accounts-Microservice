@@ -1,7 +1,7 @@
 apiVersion: cumulusbank.com/v1alpha1
 kind: CumulusBankAccSvc
 metadata:
-  name: accountsvc321
+  name: accountsvc
 spec:
   replicaCount: 2
   namespace: "kubeapp"

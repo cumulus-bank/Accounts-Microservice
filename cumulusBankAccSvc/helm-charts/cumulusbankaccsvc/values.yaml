@@ -23,7 +23,7 @@ livenessProbe:
   periodSeconds: 10
 image:
   name: accountsvc
-  imageName: "account-svc" 
+  imageName: "account-svc:latest" 
   imagePullPolicy: Always
   ports:
     containerPort: 7000
