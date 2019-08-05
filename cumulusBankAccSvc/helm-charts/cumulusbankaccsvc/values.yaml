@@ -1,7 +1,7 @@
 replicaCount: 2
 namespace: "kubeapp"
 metadata:
- name: accountsvc
+ name: account-svc
  label: Accountsvc
 readinessProbe:
   path: /healthz

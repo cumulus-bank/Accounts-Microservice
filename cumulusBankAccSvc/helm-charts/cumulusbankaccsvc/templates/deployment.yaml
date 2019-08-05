@@ -1,9 +1,9 @@
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
-  name: "account-svc"
+  name: "{{ .Values.metadata.name }}"
   labels:
-    app: "account-svc"
+    app: "{{ .Values.metadata.name }}"
 spec:
   replicas: {{ .Values.replicaCount }}
   triggers:

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app: "account-svc"
+    app: "{{ .Values.metadata.name }}"
   name: accountmicroservice
   namespace: "{{ .Values.namespace }}"
 data:

@@ -1,9 +1,9 @@
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-  name: "account-svc"
+  name: "{{ .Values.metadata.name }}"
   labels:
-    app: "account-svc"
+    app: "{{ .Values.metadata.name }}"
   annotations:
     openshift.io/generated-by: OpenShiftWebConsole
 spec:

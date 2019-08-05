@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
- name: "account-svc"
+ name: "{{ .Values.metadata.name }}"
  labels:
-   app: "account-svc"
+   app: "{{ .Values.metadata.name }}"
 spec:
  type: {{ .Values.service.servicePortConfiguration.type}}
  selector:
