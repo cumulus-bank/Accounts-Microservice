@@ -4,9 +4,9 @@ metadata:
   name: accountsvc321
 spec:
   replicaCount: 2
+  namespace: "kubeapp"
   mongodb: 
     host: "mongodb.kubeapp"
-    port: "27017"
     username: "YWRtaW4="
     password: "YWRtaW4="
     secret: "aGVsbG8="
