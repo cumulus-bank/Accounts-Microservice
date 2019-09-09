@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "types": ["reflect-metadata"],
+    "types": ["reflect-metadata", "jest"],
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "inlineSourceMap": true,
     /* Basic Options */
     // "strict": true /* Enable all strict type-checking options. */,
     // "noImplicitAny": true /* Raise error on expressions and declarations with an implied 'any' type. */,
@@ -13,9 +14,7 @@
     "jsx": "react" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
     "allowJs": true /* Allow javascript files to be compiled. */,
     "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
-    "typeRoots": [
-      "node_modules/@types/*"
-    ] /* List of folders to include type definitions from. */,
+    "typeRoots": ["./types", "./node_modules/@types"],
     "lib": [
       "es2015"
     ] /* Specify library files to be included in the compilation. */,
@@ -64,5 +63,5 @@
     // "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
   },
-  "exclude": ["node_modules", "**/*.spec.ts", "frontend"]
+  "exclude": ["node_modules", "**/*.spec.ts", "frontend", "**/*.test.ts"],
 }

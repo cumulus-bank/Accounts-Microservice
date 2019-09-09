@@ -4,9 +4,9 @@ metadata:
   name: accountsvc
 spec:
   replicaCount: 2
-  namespace: "kubeapp"
+  namespace: "cumulusbank"
   mongodb: 
-    host: "mongodb.kubeapp"
+    host: "mongodbcumulus.cumulusbank"
     username: "YWRtaW4="
     password: "YWRtaW4="
     secret: "aGVsbG8="
