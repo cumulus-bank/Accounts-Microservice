@@ -80,6 +80,21 @@ const functions = {
     axios
       .post("http://localhost:8082/listAccount",newAccount)
       .then(res => res.data)
-      .catch(err => "error")
+      .catch(err => "error"),
+  getAccountAll: () => 
+  axios
+  .get("http://localhost:8082/listAccount")
+  .then(res => res.data)
+  .catch(err => "error"),
+  getAccountByid: (id) => 
+  axios
+  .get("http://localhost:8082/listAccount/"+id)
+  .then(res => res.data)
+  .catch(err => "error"),
+  getAccountByID: (id) => 
+  axios
+  .get("http://localhost:8082/listAccountID/"+id)
+  .then(res => res.data)
+  .catch(err => "error")
 };
 module.exports = functions;
