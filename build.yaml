@@ -29,8 +29,13 @@ spec:
                     def onlyname = temparray[1]
                     echo "${onlyname}"
                     echo "Running unit tests against ${onlyname}"
-                    def temp = sh (script: 'oc get po', returnStdout: true).trim()
+                    def execcommand = "oc exec -it ${onlyname} -- npm test | grep PASS"
+                    echo "${execcommand}"
+                    def temp = sh (script: execcommand, returnStdout: true).trim()
                     echo  "var nameee isssss    ${temp}"
+                    def finalchecktemp = temp.split("  ")
+                    def finalcheck = finalchecktemp[0]
+                    echo "checkkk isssss isssss    ${finalcheck}"
                  }
               }
             }
