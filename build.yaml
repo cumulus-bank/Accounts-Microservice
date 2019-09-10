@@ -23,9 +23,7 @@ spec:
                  podSelector.withEach {
                     def podName = it.name()
                     def temparray = podName.split("/")
-                    echo "${temparray}"
                     def onlyname = temparray[1]
-                    echo "${onlyname}"
                     echo "Running unit tests against ${onlyname}"
                     def execcommand = "oc exec -it ${onlyname} -- /bin/sh -c 'jest --no-color 2> /mnt/a.txt' "
                     script {
@@ -36,10 +34,12 @@ spec:
                     script {
                        tempo = sh (script: execcommand, returnStdout: true).trim()
                     }
-                    echo  "var nameee isssss ${tempo}"
-                    tempo = tempo.replaceAll("[\n\r]", "")
-                    tempo = tempo.split(" ")
-                    assert tempo.contains("constructor.PASS")
+                    def lastfinal = tempo
+                    echo  "var nameee isssss ${lastfinal}"
+                    lastfinal = lastfinal.replaceAll("[\n\r]", "")
+                    lastfinal = lastfinal.split(" ")
+                    echo  "var nameee isssss ${lastfinal}"
+                    assert lastfinal.contains("constructor.PASS")
                  }
               }
             }
