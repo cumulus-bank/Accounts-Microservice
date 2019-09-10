@@ -12,7 +12,7 @@ spec:
           }
           stage ('deploy'){
             openshiftDeploy(deploymentConfig: 'account-svc')
-            sleep 10
+            sleep 30
           }
           stage ('test'){
             openshift.withCluster() {
