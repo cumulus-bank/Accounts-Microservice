@@ -21,21 +21,25 @@ spec:
                  def dcObj = openshift.selector('dc', 'account-svc').object()
                  def podSelector = openshift.selector('pod', [deployment: "account-svc-${dcObj.status.latestVersion}"])
                  podSelector.withEach {
-                    sh '''#!/bin/bash
-                    oc get po '''
                     def podName = it.name()
                     def temparray = podName.split("/")
                     echo "${temparray}"
                     def onlyname = temparray[1]
                     echo "${onlyname}"
                     echo "Running unit tests against ${onlyname}"
-                    def execcommand = "oc exec -it ${onlyname} -- npm test | grep PASS"
+                    def execcommand = "oc exec -it ${onlyname} -- /bin/sh -c 'jest --no-color 2> /mnt/a.txt' "
+                    script {
+                      tempo = sh (script: execcommand, returnStdout: true).trim()
+                    }
+                    execcommand = "oc exec -it ${onlyname} -- /bin/sh -c 'cat /mnt/a.txt' "
                     echo "${execcommand}"
-                    def temp = sh (script: execcommand, returnStdout: true).trim()
-                    echo  "var nameee isssss    ${temp}"
-                    def finalchecktemp = temp.split("  ")
-                    def finalcheck = finalchecktemp[0]
-                    echo "checkkk isssss isssss    ${finalcheck}"
+                    script {
+                       tempo = sh (script: execcommand, returnStdout: true).trim()
+                    }
+                    echo  "var nameee isssss ${tempo}"
+                    tempo = tempo.replaceAll("[\n\r]", "")
+                    tempo = tempo.split(" ")
+                    assert tempo.contains("constructor.PASS")
                  }
               }
             }
