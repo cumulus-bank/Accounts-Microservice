@@ -12,7 +12,7 @@ spec:
           }
           stage ('deploy'){
             openshiftDeploy(deploymentConfig: 'account-svc')
-            sleep 30
+            sleep 10
           }
           stage ('test'){
             openshift.withCluster() {
@@ -21,16 +21,21 @@ spec:
                  def dcObj = openshift.selector('dc', 'account-svc').object()
                  def podSelector = openshift.selector('pod', [deployment: "account-svc-${dcObj.status.latestVersion}"])
                  podSelector.withEach {
-                    sh '''#!/bin/bash
-                    oc get po '''
                     def podName = it.name()
                     def temparray = podName.split("/")
                     echo "${temparray}"
                     def onlyname = temparray[1]
                     echo "${onlyname}"
                     echo "Running unit tests against ${onlyname}"
-                    def resp = openshiftExec(pod: onlyname, command: ["/usr/bin/curl"])
-                    echo "${resp}"
+                    def cmd = ['/bin/sh',  '-c',  'echo "12345" ']
+                    cmd.execute().with{
+                        def output = new StringWriter()
+                        def error = new StringWriter()
+                        it.waitForProcessOutput(output, error)
+                        println "error=$error"
+                        println "output=$output"
+                        println "code=${it.exitValue()}"
+                    }
                  }
               }
             }
