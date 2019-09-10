@@ -73,27 +73,27 @@ const newAccount = {
 const functions = {
   fetchHealthz: () =>
     axios
-      .get("http://localhost:8082/healthz")
+      .get("http://account-svc.cumulusbank:7000/healthz")
       .then(res => res.data)
       .catch(err => "error"),
   newAccount: () =>
     axios
-      .post("http://localhost:8082/listAccount",newAccount)
+      .post("http://account-svc.cumulusbank:7000/listAccount",newAccount)
       .then(res => res.data)
       .catch(err => "error"),
   getAccountAll: () => 
   axios
-  .get("http://localhost:8082/listAccount")
+  .get("http://account-svc.cumulusbank:7000/listAccount")
   .then(res => res.data)
   .catch(err => "error"),
   getAccountByid: (id) => 
   axios
-  .get("http://localhost:8082/listAccount/"+id)
+  .get("http://account-svc.cumulusbank:7000/listAccount/"+id)
   .then(res => res.data)
   .catch(err => "error"),
   getAccountByID: (id) => 
   axios
-  .get("http://localhost:8082/listAccountID/"+id)
+  .get("http://account-svc.cumulusbank:7000/listAccountID/"+id)
   .then(res => res.data)
   .catch(err => "error")
 };

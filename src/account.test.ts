@@ -21,7 +21,7 @@ describe("CRUD operations", () => {
   let ID;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect("mongodb://localhost:27017", {
+    connection = await MongoClient.connect('mongodb://'+process.env.MONGOUSERNAME+':'+process.env.MONGOPASSWORD+'@'+process.env.HOSTNAMEMONGODB+':'+process.env.MONGOPORT, {
       useNewUrlParser: true
     });
     db = await connection.db("admin");

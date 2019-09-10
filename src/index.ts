@@ -10,7 +10,7 @@ class InitServer {
   private server: any;
 
   constructor() {
-    this.port = this.normalizePort(8082);
+    this.port = this.normalizePort(7000);
     App.set('port', this.port);
     this.server = http.createServer(App);
     this.server.listen(this.port);
