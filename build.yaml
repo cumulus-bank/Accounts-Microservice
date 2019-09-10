@@ -35,10 +35,8 @@ spec:
                        tempo = sh (script: execcommand, returnStdout: true).trim()
                     }
                     def lastfinal = tempo
-                    echo  "var nameee isssss ${lastfinal}"
                     lastfinal = lastfinal.replaceAll("[\n\r]", "")
                     lastfinal = lastfinal.split(" ")
-                    echo  "var nameee isssss ${lastfinal}"
                     assert lastfinal.contains("constructor.PASS")
                  }
               }
