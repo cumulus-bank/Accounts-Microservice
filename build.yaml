@@ -1,0 +1,32 @@
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: "sample-pipeline"
+spec:
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: |-
+        node('') {
+          stage ('build'){
+            openshiftBuild(buildConfig: 'account-svc', showBuildLogs: 'true')
+          }
+          stage ('deploy'){
+            openshiftDeploy(deploymentConfig: 'account-svc')
+            sleep 10
+          }
+          stage ('test'){
+            openshift.withCluster() {
+              openshift.withProject() {
+                 def dcObj = openshift.selector('dc', 'account-svc').object()
+                 def podSelector = openshift.selector('pod', [deployment: "account-svc-${dcObj.status.latestVersion}"])
+                 podSelector.withEach {
+                    def podName = it.name()
+                    podName = podName.replaceFirst("pods/", "")
+                    echo "Running unit tests against ${podName}"
+                    def resp = openshiftExec(pod: podName, command: ["npm", "test"])
+                    assert resp.stdout.contains("PASS")  
+                 }
+              }
+            }
+          }
+        }
