@@ -33,10 +33,9 @@ describe("CRUD operations", () => {
       // handle the error if any
       if (err) throw err;
       // delete the mongodb collection
-      collection.remove({}, function(err, result) {
+      collection.deleteMany({}, function(err, result) {
         // handle the error if any
         if (err) throw err;
-        console.log("Collection is deleted! " + result);
         // close the connection to db when you are done with it
       });
     });
@@ -89,13 +88,12 @@ describe("CRUD operations", () => {
 
   it("get account by ID of user should be of type Array ", async () => {
     expect.assertions(1);
-    console.log(ID);
     return functions.getAccountByID(ID).then(data => {
       expect(Array.isArray(data)).toEqual(true);
     });
   });
 
-  it("Delete the account  ", async () => {
+  it("Delete the account", async () => {
     expect.assertions(1);
     return functions.getAccountByID(ID).then(data => {
       expect(Array.isArray(data)).toEqual(true);
