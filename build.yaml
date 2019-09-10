@@ -7,14 +7,14 @@ spec:
     jenkinsPipelineStrategy:
       jenkinsfile: |-
         node('') {
-          stage ('build'){
+          stage ('Building image'){
             openshiftBuild(buildConfig: 'account-svc', showBuildLogs: 'true')
           }
-          stage ('deploy'){
+          stage ('Deploy to dev env'){
             openshiftDeploy(deploymentConfig: 'account-svc')
             sleep 10
           }
-          stage ('test'){
+          stage ('Unit Test'){
             openshift.withCluster() {
               openshift.withProject("cumulusbank") {
                  echo "Using project: ${openshift.project()}"
