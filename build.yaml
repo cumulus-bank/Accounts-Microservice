@@ -21,7 +21,7 @@ spec:
                  def dcObj = openshift.selector('dc', 'account-svc').object()
                  def podSelector = openshift.selector('pod', [deployment: "account-svc-${dcObj.status.latestVersion}"])
                  podSelector.withEach {
-                    bash '''#!/bin/bash
+                    sh '''#!/bin/bash
                     oc get po '''
                     def podName = it.name()
                     def temparray = podName.split("/")
