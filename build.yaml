@@ -10,7 +10,7 @@ spec:
           stage ('Building image'){
             openshiftBuild(buildConfig: 'account-svc', showBuildLogs: 'true')
           }
-          stage ('Deploy to dev env'){
+          stage ('Deploy to Dev Env'){
             openshiftDeploy(deploymentConfig: 'account-svc')
             sleep 10
           }
@@ -44,10 +44,14 @@ spec:
               }
             }
           }
-          stage('Deploy to Staging'){
+          stage('Deploy to Staging Env'){
             openshift.withCluster() {
               openshift.withProject("cumulusbank") {
-                openshift.tag("account-svc:latest", "account-svc-staging:latest")
+                def execcommand = "oc tag cumulusbank/account-svc:latest cumulusbankstage/account-svc-staging:latest"
+                script {
+                   tempo = sh (script: execcommand, returnStdout: true).trim()
+                }
+                sleep 10
               }
             }
           }

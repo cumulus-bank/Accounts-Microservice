@@ -21,6 +21,7 @@ rules:
 - apiGroups:
   - ""
   - build.openshift.io
+  - image.openshift.io
   resources:
   - "*"
   verbs:
