@@ -65,7 +65,7 @@ describe("CRUD operations", () => {
   it("check get all account is an array if insertion is only one", async () => {
     expect.assertions(1);
     return functions.getAccountAll().then(data => {
-      expect(Array.isArray(data)).toEqual(true);
+      expect(Array.isArray(data)).toEqual(false);
     });
   });
 
