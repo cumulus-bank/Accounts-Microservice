@@ -6,7 +6,7 @@ metadata:
     app: jenkins-ephemeral
     template: jenkins-ephemeral-template
   name: jenkins_edit
-  namespace: cumulusbank
+  namespace: cumulusbankprod
 roleRef:
   kind: Role
   name: jenkins
