@@ -44,7 +44,7 @@ spec:
               }
             }
           }
-          stage('Deploying to Staging Environment'){
+          stage('Deploying to Staging Env'){
             openshift.withCluster() {
               openshift.withProject("cumulusbank") {
                 def execcommand = "oc tag cumulusbank/account-svc:latest cumulusbankstage/account-svc-staging:latest"
@@ -55,12 +55,12 @@ spec:
               }
             }
           }
-          stage('Promote to Production?'){
+          stage('Promotion'){
              timeout(time: 30, unit: 'DAYS') {
                input message: "Promote to Production?"
              }
           }
-          stage('Deploying to Production Environment'){
+          stage('Deploying to Prod Env'){
             openshift.withCluster() {
               openshift.withProject("cumulusbank") {
                 def execcommand = "oc tag cumulusbank/account-svc:latest cumulusbankprod/account-svc-prod:latest"
