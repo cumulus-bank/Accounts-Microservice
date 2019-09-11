@@ -1,0 +1,83 @@
+apiVersion: authorization.openshift.io/v1
+kind: ClusterRole
+metadata:
+  name: jenkins
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - services
+  - endpoints
+  - events
+  - configmaps
+  - secrets
+  - imagestreams
+  - routes
+  - buildconfigs
+  - deploymentconfigs
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  - build.openshift.io
+  resources:
+  - "*"
+  verbs:
+  - "*"
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+- apiGroups:
+  - "route.openshift.io"
+  resources:
+  - routes
+  - routes/custom-host
+  verbs:
+  - '*'
+- apiGroups:
+  - "apps.openshift.io"
+  resources:
+  - deploymentconfigs
+  verbs:
+  - '*'
+- apiGroups:
+  - "build.openshift.io"
+  resources:
+  - buildconfigs
+  verbs:
+  - '*'
+- apiGroups:
+  - "image.openshift.io"
+  resources:
+  - imagestreams
+  verbs:
+  - '*'
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - daemonsets
+  - replicasets
+  - statefulsets
+  - imagestreams
+  - routes
+  - buildconfigs
+  - deploymentconfigs
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - "*"
+- apiGroups:
+  - apps
+  resources:
+  - replicasets
+  verbs:
+  - get
