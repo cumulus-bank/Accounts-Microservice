@@ -55,6 +55,11 @@ spec:
               }
             }
           }
+          stage('Promote to Production?'){
+             timeout(time: 30, unit: 'DAYS') {
+               input message: "Promote to Production?"
+             }
+          }
           stage('Deploying to Production Environment'){
             openshift.withCluster() {
               openshift.withProject("cumulusbank") {
