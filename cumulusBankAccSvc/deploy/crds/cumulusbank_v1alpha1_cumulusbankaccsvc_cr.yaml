@@ -4,9 +4,11 @@ metadata:
   name: accountsvc
 spec:
   replicaCount: 2
-  namespace: "cumulusbank"
+  namespace: "cumulusbankstage"
   mongodb: 
-    host: "mongodbcumulus.cumulusbank"
+    host: "mongodb.cumulusbankstage"
     username: "YWRtaW4="
     password: "YWRtaW4="
     secret: "aGVsbG8="
+  image:
+    imageName: "account-svc-staging"

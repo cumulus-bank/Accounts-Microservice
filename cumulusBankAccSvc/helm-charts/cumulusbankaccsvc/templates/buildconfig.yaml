@@ -10,7 +10,7 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: {{ .Values.buildconfig.imagename }}
+      name: "{{ .Values.image.imageName }}:latest"
   runPolicy: Serial
   source:
     git:

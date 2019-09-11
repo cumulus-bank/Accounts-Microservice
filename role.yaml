@@ -30,7 +30,7 @@ rules:
   resources:
   - namespaces
   verbs:
-  - get
+  - "*"
 - apiGroups:
   - "route.openshift.io"
   resources:
@@ -53,7 +53,7 @@ rules:
 - apiGroups:
   - "image.openshift.io"
   resources:
-  - imagestreams
+  - "*"
   verbs:
   - '*'
 - apiGroups:

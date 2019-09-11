@@ -3,6 +3,6 @@ apiVersion: image.openshift.io/v1
 metadata:
     labels:
         app: "{{ .Values.metadata.name }}"
-    name: "{{ .Values.metadata.name }}"
+    name: "{{ .Values.image.imageName }}"
     annotations:
         description: Keeps track of changes in the application image

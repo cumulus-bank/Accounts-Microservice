@@ -44,4 +44,11 @@ spec:
               }
             }
           }
+          stage('Deploy to Staging'){
+            openshift.withCluster() {
+              openshift.withProject("cumulusbank") {
+                openshift.tag("account-svc:latest", "account-svc-staging:latest")
+              }
+            }
+          }
         }
