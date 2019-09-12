@@ -18,7 +18,7 @@ livenessProbe:
   periodSeconds: 10
 image:
   name: accountsvc
-  imageName: "accountsvc" 
+  imageName: "mycluster.icp:8500/default/account-microservice" 
   imagePullPolicy: Always
   ports:
     containerPort: 7000
