@@ -337,3 +337,178 @@ metadata:
   name: account-svc-prod
   namespace: cumulusbankprod
 ``` 
+
+#### Lets build the pipeline
+
+We will use BuildConfig and JenkinsStrategy in BuildConfig to set up our CI/CD pipeline
+
+1. Build Stage
+```sh
+    stage ('Building image'){
+      openshiftBuild(buildConfig: 'account-svc', showBuildLogs: 'true')
+    }
+```
+2. Deploy to Dev stage
+
+```sh 
+  stage ('Deploying to Dev Environment'){
+    openshiftDeploy(deploymentConfig: 'account-svc')
+    sleep 10
+  }
+```
+3. Test Stage
+
+```sh 
+          stage ('Unit Test'){
+            openshift.withCluster() {
+              openshift.withProject("cumulusbank") {
+                 echo "Using project: ${openshift.project()}"
+                 def dcObj = openshift.selector('dc', 'account-svc').object()
+                 def podSelector = openshift.selector('pod', [deployment: "account-svc-${dcObj.status.latestVersion}"])
+                 podSelector.withEach {
+                    def podName = it.name()
+                    def temparray = podName.split("/")
+                    def onlyname = temparray[1]
+                    echo "Running unit tests against ${onlyname}"
+                    def execcommand = "oc exec -it ${onlyname} -- /bin/sh -c 'jest --no-color 2> /mnt/a.txt' "
+                    script {
+                      tempo = sh (script: execcommand, returnStdout: true).trim()
+                    }
+                    execcommand = "oc exec -it ${onlyname} -- /bin/sh -c 'cat /mnt/a.txt' "
+                    echo "${execcommand}"
+                    script {
+                       tempo = sh (script: execcommand, returnStdout: true).trim()
+                    }
+                    def lastfinal = tempo
+                    echo "${lastfinal}"
+                    lastfinal = lastfinal.replaceAll("[\n\r]", "")
+                    lastfinal = lastfinal.split(" ")
+                    echo "${lastfinal}"
+                    assert lastfinal.contains("constructor.PASS")
+                 }
+              }
+            }
+          }
+```
+4. Deploy to staging
+
+```sh
+          stage('Deploying to Staging Env'){
+            openshift.withCluster() {
+              openshift.withProject("cumulusbank") {
+                def execcommand = "oc tag cumulusbank/account-svc:latest cumulusbankstage/account-svc-staging:latest"
+                script {
+                   tempo = sh (script: execcommand, returnStdout: true).trim()
+                }
+                sleep 10
+              }
+            }
+          }
+```
+
+5. Promote to Prod
+```sh
+          stage('Promotion'){
+             timeout(time: 30, unit: 'DAYS') {
+               input message: "Promote to Production?"
+             }
+          }
+```
+
+6. Deploy to Prod
+```sh
+          stage('Deploying to Prod Env'){
+            openshift.withCluster() {
+              openshift.withProject("cumulusbank") {
+                def execcommand = "oc tag cumulusbank/account-svc:latest cumulusbankprod/account-svc-prod:latest"
+                script {
+                   tempo = sh (script: execcommand, returnStdout: true).trim()
+                }
+                sleep 10
+              }
+            }
+          }
+```
+
+7. Full pipeline
+```sh
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: "accounts-microservice-pipeline"
+spec:
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: |-
+        node('') {
+          stage ('Building image'){
+            openshiftBuild(buildConfig: 'account-svc', showBuildLogs: 'true')
+          }
+          stage ('Deploying to Dev Environment'){
+            openshiftDeploy(deploymentConfig: 'account-svc')
+            sleep 10
+          }
+          stage ('Unit Test'){
+            openshift.withCluster() {
+              openshift.withProject("cumulusbank") {
+                 echo "Using project: ${openshift.project()}"
+                 def dcObj = openshift.selector('dc', 'account-svc').object()
+                 def podSelector = openshift.selector('pod', [deployment: "account-svc-${dcObj.status.latestVersion}"])
+                 podSelector.withEach {
+                    def podName = it.name()
+                    def temparray = podName.split("/")
+                    def onlyname = temparray[1]
+                    echo "Running unit tests against ${onlyname}"
+                    def execcommand = "oc exec -it ${onlyname} -- /bin/sh -c 'jest --no-color 2> /mnt/a.txt' "
+                    script {
+                      tempo = sh (script: execcommand, returnStdout: true).trim()
+                    }
+                    execcommand = "oc exec -it ${onlyname} -- /bin/sh -c 'cat /mnt/a.txt' "
+                    echo "${execcommand}"
+                    script {
+                       tempo = sh (script: execcommand, returnStdout: true).trim()
+                    }
+                    def lastfinal = tempo
+                    echo "${lastfinal}"
+                    lastfinal = lastfinal.replaceAll("[\n\r]", "")
+                    lastfinal = lastfinal.split(" ")
+                    echo "${lastfinal}"
+                    assert lastfinal.contains("constructor.PASS")
+                 }
+              }
+            }
+          }
+          stage('Deploying to Staging Env'){
+            openshift.withCluster() {
+              openshift.withProject("cumulusbank") {
+                def execcommand = "oc tag cumulusbank/account-svc:latest cumulusbankstage/account-svc-staging:latest"
+                script {
+                   tempo = sh (script: execcommand, returnStdout: true).trim()
+                }
+                sleep 10
+              }
+            }
+          }
+          stage('Promotion'){
+             timeout(time: 30, unit: 'DAYS') {
+               input message: "Promote to Production?"
+             }
+          }
+          stage('Deploying to Prod Env'){
+            openshift.withCluster() {
+              openshift.withProject("cumulusbank") {
+                def execcommand = "oc tag cumulusbank/account-svc:latest cumulusbankprod/account-svc-prod:latest"
+                script {
+                   tempo = sh (script: execcommand, returnStdout: true).trim()
+                }
+                sleep 10
+              }
+            }
+          }
+        }
+```
+#### Deploy pipeline found in build.yaml file in cumulusbank project
+
+```
+oc apply -f build.yaml
+```
