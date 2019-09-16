@@ -91,4 +91,226 @@ test("checking health check api", () => {
 
 4. In the fourth stage, if all the tests has been passed, the application will be automatically promoted to Staging. Here UAT test will be performed before it moves to production 
 
-5. If all UAT tests has been passed, the user will manually promote the application from staging to prodiction 
+5. If all UAT tests has been passed, the user will manually promote the application from staging to prodiction
+
+#### Steps to setup this CI/CD pipeline 
+0. Create **cumulusbank** , ***cumulusbankstage**, and  **cumulusbankprod** project. Then deploy mongodb in each project accordingly
+1. clone the repo
+```
+$ git clone https://github.com/cumulus-bank/Accounts-Microservice.git
+```
+2. install ***serviceaccount***, ***rolebinding***, ***role***, ***crd***, and ***operator***
+```
+$ oc apply -f deploy/service_account.yaml
+$ oc apply -f deploy/role.yaml
+$ oc apply -f deploy/role_binding.yaml
+$ oc apply -f deploy/operator.yaml
+$ oc apply -f deploy/crds/cumulusbank_v1alpha1_cumulusbankaccsvc_crd.yaml
+```
+* Deploy Cumulus Bank Account Microservice (in Dev stage) in 
+
+``` YAML
+apiVersion: cumulusbank.com/v1alpha1
+kind: CumulusBankAccSvc
+metadata:
+  name: accountsvc
+spec:
+  replicaCount: 2
+  namespace: "cumulusbank"
+  mongodb: 
+    host: "mongodb.cumulusbank"
+    username: "YWRtaW4="
+    password: "YWRtaW4="
+    secret: "aGVsbG8="
+```
+
+* Deploy Cumulus Bank Account Microservice (in Staging stage) in 
+
+``` YAML
+apiVersion: cumulusbank.com/v1alpha1
+kind: CumulusBankAccSvc
+metadata:
+  name: accountsvc
+spec:
+  replicaCount: 2
+  namespace: "cumulusbankstage"
+  mongodb: 
+    host: "mongodb.cumulusbankstage"
+    username: "YWRtaW4="
+    password: "YWRtaW4="
+    secret: "aGVsbG8="
+```
+
+* Deploy Cumulus Bank Account Microservice (in Prod stage) in 
+
+``` YAML
+apiVersion: cumulusbank.com/v1alpha1
+kind: CumulusBankAccSvc
+metadata:
+  name: accountsvc
+spec:
+  replicaCount: 2
+  namespace: "cumulusbankprod"
+  mongodb: 
+    host: "mongodb.cumulusbankprod"
+    username: "YWRtaW4="
+    password: "YWRtaW4="
+    secret: "aGVsbG8="
+```
+3. Configure RBACs in each project for jenkins to do its functionalities.
+
+* Create Roles
+``` YAML
+apiVersion: authorization.openshift.io/v1
+kind: ClusterRole
+metadata:
+  name: jenkins
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - services
+  - endpoints
+  - events
+  - configmaps
+  - secrets
+  - imagestreams
+  - routes
+  - buildconfigs
+  - deploymentconfigs
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  - build.openshift.io
+  - image.openshift.io
+  resources:
+  - "*"
+  verbs:
+  - "*"
+- apiGroups:
+  - ""
+  resources:
+  - "*"
+  verbs:
+  - "*"
+- apiGroups:
+  - "route.openshift.io"
+  resources:
+  - routes
+  - routes/custom-host
+  verbs:
+  - '*'
+- apiGroups:
+  - "apps.openshift.io"
+  resources:
+  - deploymentconfigs
+  verbs:
+  - '*'
+- apiGroups:
+  - "build.openshift.io"
+  resources:
+  - buildconfigs
+  verbs:
+  - '*'
+- apiGroups:
+  - "image.openshift.io"
+  resources:
+  - "*"
+  verbs:
+  - '*'
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - daemonsets
+  - replicasets
+  - statefulsets
+  - imagestreams
+  - routes
+  - buildconfigs
+  - deploymentconfigs
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - "*"
+- apiGroups:
+  - apps
+  resources:
+  - replicasets
+  verbs:
+  - get
+```
+* Deploy Rolebinding Dev (cumulusbank project)
+
+```YAML
+apiVersion: authorization.openshift.io/v1
+groupNames: null
+kind: RoleBinding
+metadata:
+  labels:
+    app: jenkins-ephemeral
+    template: jenkins-ephemeral-template
+  name: jenkins_edit
+  namespace: cumulusbank
+roleRef:
+  kind: Role
+  name: jenkins
+  apiGroup: authorization.openshift.io/v1
+subjects:
+- kind: ServiceAccount
+  name: jenkins
+userNames:
+- system:serviceaccount:cumulusbank:jenkins
+```
+
+* Deploy Rolebinding Dev (cumulusbankstage project)
+
+```YAML
+apiVersion: authorization.openshift.io/v1
+groupNames: null
+kind: RoleBinding
+metadata:
+  labels:
+    app: jenkins-ephemeral
+    template: jenkins-ephemeral-template
+  name: jenkins_edit
+  namespace: cumulusbankstage
+roleRef:
+  kind: Role
+  name: jenkins
+  apiGroup: authorization.openshift.io/v1
+subjects:
+- kind: ServiceAccount
+  name: jenkins
+userNames:
+- system:serviceaccount:cumulusbank:jenkins
+```
+
+* Deploy Rolebinding Dev (cumulusbankprod project)
+
+```YAML
+apiVersion: authorization.openshift.io/v1
+groupNames: null
+kind: RoleBinding
+metadata:
+  labels:
+    app: jenkins-ephemeral
+    template: jenkins-ephemeral-template
+  name: jenkins_edit
+  namespace: cumulusbankprod
+roleRef:
+  kind: Role
+  name: jenkins
+  apiGroup: authorization.openshift.io/v1
+subjects:
+- kind: ServiceAccount
+  name: jenkins
+userNames:
+- system:serviceaccount:cumulusbank:jenkins
+```
