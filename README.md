@@ -314,3 +314,26 @@ subjects:
 userNames:
 - system:serviceaccount:cumulusbank:jenkins
 ```
+4. Create image streams in stage and prod project
+
+* Create imagestream in cumulusbankstage project 
+``` YAML
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: account-svc
+  name: account-svc-stage
+  namespace: cumulusbankstage
+``` 
+
+* Create imagestream in prod project 
+``` YAML
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: account-svc
+  name: account-svc-prod
+  namespace: cumulusbankprod
+``` 
