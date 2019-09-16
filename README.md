@@ -343,14 +343,14 @@ metadata:
 We will use BuildConfig and JenkinsStrategy in BuildConfig to set up our CI/CD pipeline
 
 1. Build Stage
-```sh
+```s
     stage ('Building image'){
       openshiftBuild(buildConfig: 'account-svc', showBuildLogs: 'true')
     }
 ```
 2. Deploy to Dev stage
 
-```sh 
+```s
   stage ('Deploying to Dev Environment'){
     openshiftDeploy(deploymentConfig: 'account-svc')
     sleep 10
@@ -358,7 +358,7 @@ We will use BuildConfig and JenkinsStrategy in BuildConfig to set up our CI/CD p
 ```
 3. Test Stage
 
-```sh 
+```s
           stage ('Unit Test'){
             openshift.withCluster() {
               openshift.withProject("cumulusbank") {
@@ -392,7 +392,7 @@ We will use BuildConfig and JenkinsStrategy in BuildConfig to set up our CI/CD p
 ```
 4. Deploy to staging
 
-```sh
+```s
           stage('Deploying to Staging Env'){
             openshift.withCluster() {
               openshift.withProject("cumulusbank") {
@@ -416,7 +416,7 @@ We will use BuildConfig and JenkinsStrategy in BuildConfig to set up our CI/CD p
 ```
 
 6. Deploy to Prod
-```sh
+```s
           stage('Deploying to Prod Env'){
             openshift.withCluster() {
               openshift.withProject("cumulusbank") {
@@ -431,7 +431,7 @@ We will use BuildConfig and JenkinsStrategy in BuildConfig to set up our CI/CD p
 ```
 
 7. Full pipeline
-```sh
+```s
 kind: "BuildConfig"
 apiVersion: "v1"
 metadata:
@@ -509,6 +509,6 @@ spec:
 ```
 #### Deploy pipeline found in build.yaml file in cumulusbank project
 
-```
+```sh
 oc apply -f build.yaml
 ```
