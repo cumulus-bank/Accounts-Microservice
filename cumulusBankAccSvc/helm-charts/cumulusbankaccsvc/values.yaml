@@ -105,8 +105,8 @@ buildconfig:
   branch: "master"
   name: "account-svc"
   imagename: "account-svc:latest"
-  secret1: "wsedrhjk"
-  secret2: "wsedrhjk"
+  secret1: $(head -c 24 /dev/random | base64)
+  secret2: $(head -c 24 /dev/random | base64)
 
 routes:
   host: "account-svc-kubeapp.apps.9.30.210.207.nip.io"
