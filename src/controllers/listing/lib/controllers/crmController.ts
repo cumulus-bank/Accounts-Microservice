@@ -1,6 +1,8 @@
 import * as mongoose from "mongoose";
 import { AccountSchema } from "../models/crmModel";
 import { Request, Response } from "express";
+var fs    = require("fs");
+var request = require('request');
 
 const Account = mongoose.model("Account", AccountSchema);
 export class AccountController {
@@ -132,7 +134,33 @@ export class AccountController {
           res.status(404).json({ err });
           return;
         }
-        res.json(account);
+        else{
+          request({
+            method: "POST",
+            uri: "https://9.30.160.236:31046/topics/LedgerFeed/records",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer hedS4cZlehLctvfnJAdvmSzonSbsCFDUGHwhNnyakDOR"
+            },
+            body: JSON.stringify({
+              Transaction: {
+                "Product":req.body.Product,
+                "Price":req.body.Price,
+                "AccountID":req.body.AccountID,
+                "AccountName": req.body.AccountName,
+                "Type":req.body.Type,
+                "Date":req.body.Date
+              }
+            }),
+            agentOptions: {
+              ca: fs.readFileSync("./es-cert.pem")
+            }
+          }, function(error, httpResponse, body) {
+           console.log(body);
+           res.json(account);
+          });
+        }
+        
       }
     );
   }

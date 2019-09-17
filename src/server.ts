@@ -3,6 +3,9 @@ import bodyParser from 'body-parser';
 import session from 'express-session';
 import ListingMongoController from './controllers/listing/index';
 var mongoose = require('mongoose');
+var fs    = require("fs");
+const request = require('request');
+
 mongoose.Promise = Promise;
 class App {
   public express: express.Application;
@@ -29,6 +32,7 @@ class App {
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: false }));
     this.express.use(session({secret: 'test123', saveUninitialized: false, resave: true}))
+    this.express.use(express.static(__dirname + '/public'));
   }
   private routes(): void {
     this.express.get('/', function(_, res) {
