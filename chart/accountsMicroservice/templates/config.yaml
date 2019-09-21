@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: accountmicroservice
-  namespace: default
+  namespace: {{ .Values.namespace }} 
 data:
   MONGOPORT: '27017'
-  HOSTNAMEMONGODB: 'cumulusbankaccount-ibm-mongodb-dev.default'
+  HOSTNAMEMONGODB: 'cumulusbankmongo-ibm-mongodb-dev.googlecloud1'

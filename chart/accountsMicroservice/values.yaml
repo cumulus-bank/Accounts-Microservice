@@ -1,5 +1,5 @@
-replicaCount: 2
-
+replicaCount: 1
+namespace: "googlecloud1"
 metadata:
  name: accountsvc 
  label: accountsvc
@@ -18,7 +18,7 @@ livenessProbe:
   periodSeconds: 10
 image:
   name: accountsvc
-  imageName: "mycluster.icp:8500/default/account-microservice:0.0.1" 
+  imageName: "s4saif/cumulus-accounts-microservice:latest" 
   imagePullPolicy: Always
   ports:
     containerPort: 7000
