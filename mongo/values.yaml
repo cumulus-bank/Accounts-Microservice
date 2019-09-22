@@ -24,13 +24,13 @@ arch:
 image: 
   repository: "ibmcom/mongodb" 
   tag: "3.6.0"
-  
+
 namespace: cumulusbank
 ## Specify a imagePullPolicy
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
 ##
-  imagePullPolicy: IfNotPresent
+imagePullPolicy: IfNotPresent
 
 
 ###############################################################################
