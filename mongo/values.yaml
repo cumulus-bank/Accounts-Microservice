@@ -81,8 +81,8 @@ service:
 ## Database access attributes - empty value will be
 ## overriden with default
 database :
-  user: "mongo"
-  password: ""
+  user: "admin"
+  password: "admin"
   name: "admin"
   dbcmd: "mongo"
 
