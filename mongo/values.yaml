@@ -24,6 +24,7 @@ arch:
 image: 
   repository: "ibmcom/mongodb" 
   tag: "3.6.0"
+  
 namespace: cumulusbank
 ## Specify a imagePullPolicy
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
