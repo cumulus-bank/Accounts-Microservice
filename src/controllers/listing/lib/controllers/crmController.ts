@@ -134,32 +134,33 @@ export class AccountController {
           res.status(404).json({ err });
           return;
         }
-        else{
-          request({
-            method: "POST",
-            uri: "https://9.30.160.236:31046/topics/LedgerFeed/records",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": "Bearer hedS4cZlehLctvfnJAdvmSzonSbsCFDUGHwhNnyakDOR"
-            },
-            body: JSON.stringify({
-              Transaction: {
-                "Product":req.body.Product,
-                "Price":req.body.Price,
-                "AccountID":req.body.AccountID,
-                "AccountName": req.body.AccountName,
-                "Type":req.body.Type,
-                "Date":req.body.Date
-              }
-            }),
-            agentOptions: {
-              ca: fs.readFileSync("./es-cert.pem")
-            }
-          }, function(error, httpResponse, body) {
-           console.log(body);
-           res.json(account);
-          });
-        }
+        res.json(account);
+        // else{
+        //   request({
+        //     method: "POST",
+        //     uri: "https://9.30.160.236:31046/topics/LedgerFeed/records",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       "Authorization": "Bearer hedS4cZlehLctvfnJAdvmSzonSbsCFDUGHwhNnyakDOR"
+        //     },
+        //     body: JSON.stringify({
+        //       Transaction: {
+        //         "Product":req.body.Product,
+        //         "Price":req.body.Price,
+        //         "AccountID":req.body.AccountID,
+        //         "AccountName": req.body.AccountName,
+        //         "Type":req.body.Type,
+        //         "Date":req.body.Date
+        //       }
+        //     }),
+        //     agentOptions: {
+        //       ca: fs.readFileSync("./es-cert.pem")
+        //     }
+        //   }, function(error, httpResponse, body) {
+        //    console.log(body);
+        //    res.json(account);
+        //   });
+        // }
         
       }
     );
