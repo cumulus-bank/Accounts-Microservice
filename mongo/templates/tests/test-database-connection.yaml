@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: "{{ .Release.Name }}-credentials-test"
+  namespace: {{ .Values.namespace }} 
   labels:
     app: {{ template "fullname" . }}-test
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
