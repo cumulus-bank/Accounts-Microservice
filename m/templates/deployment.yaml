@@ -17,6 +17,7 @@ spec:
         release: "{{ .Release.Name }}"
         heritage: "{{ .Release.Service }}"
       annotations:
+        sidecar.istio.io/inject: "true"
         productName: "MongoDB"
         productID: ""
         productVersion: "{{ .Values.image.tag }}"
