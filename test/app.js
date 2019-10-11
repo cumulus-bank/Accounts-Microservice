@@ -1,19 +1,18 @@
-var fs    = require("fs");
 var request = require('request');
-
 request({
     method: "POST",
-    uri: "https://9.30.160.236:31046/topics/LedgerFeed/records",
+    rejectUnauthorized: false,
+    requestCert: true,
+    agent: false,
+    uri: "https://caplonsgprd-1.securegateway.appdomain.cloud:15671/topics/CustomerFeed/records",
     headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer hedS4cZlehLctvfnJAdvmSzonSbsCFDUGHwhNnyakDOR"
+      "Content-Type": "text/plain",
+      "Authorization": "Bearer N2Pmtf3vpao6VR30rty7UqUXIZD-R-4_9FZwEteMQHvI",
+      "Accept": "application/json"
     },
     body: JSON.stringify({
       name: "testtt"
-    }),
-    agentOptions: {
-      ca: fs.readFileSync("es-cert.pem")
-    }
+    })
   }, function(error, httpResponse, body) {
    console.log(body);
   });

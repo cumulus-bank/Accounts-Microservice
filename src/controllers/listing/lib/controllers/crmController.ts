@@ -1,11 +1,80 @@
 import * as mongoose from "mongoose";
 import { AccountSchema } from "../models/crmModel";
 import { Request, Response } from "express";
-var fs    = require("fs");
 var request = require('request');
 
 const Account = mongoose.model("Account", AccountSchema);
 export class AccountController {
+
+  public customerfeed(req: Request, res: Response) {
+    res.setHeader("Content-Type", "application/json");
+    request({
+      method: "POST",
+      rejectUnauthorized: false,
+      requestCert: true,
+      agent: false,
+      uri: "https://caplonsgprd-1.securegateway.appdomain.cloud:15671/topics/CustomerFeed/records",
+      headers: {
+        "Content-Type": "text/plain",
+        "Authorization": "Bearer N2Pmtf3vpao6VR30rty7UqUXIZD-R-4_9FZwEteMQHvI",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(req.body)
+    }, function(error, httpResponse, body) {
+     if(error){
+       res.status(400).send(error)
+     }
+     res.status(200).json({success: 'true'})
+    });
+  }
+
+  public ledgerfeed(req: Request, res: Response) {
+    res.setHeader("Content-Type", "application/json");
+    request({
+      method: "POST",
+      rejectUnauthorized: false,
+      requestCert: true,
+      agent: false,
+      uri: "https://caplonsgprd-1.securegateway.appdomain.cloud:15671/topics/LedgerFeed/records",
+      headers: {
+        "Content-Type": "text/plain",
+        "Authorization": "Bearer fUWdxy61kqTJzvPl1WMm4TBU41cqCIQSIJjZEjVO8o2y",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(req.body)
+    }, function(error, httpResponse, body) {
+     if(error){
+       res.status(400).send(error)
+     }
+     res.status(200).json({success: 'true'})
+    });
+  }
+
+
+  public utilitybill(req: Request, res: Response) {
+    res.setHeader("Content-Type", "application/json");
+    request({
+      method: "POST",
+      rejectUnauthorized: false,
+      requestCert: true,
+      agent: false,
+      uri: "https://caplonsgprd-1.securegateway.appdomain.cloud:15671/topics/UtilityBillPayment/records",
+      headers: {
+        "Content-Type": "text/plain",
+        "Authorization": "Bearer deexllLV3LqYdNBz05d7Xd6d4Iy9jPAIZAMXYOzRNDJO",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(req.body)
+    }, function(error, httpResponse, body) {
+     if(error){
+       res.status(400).send(error)
+     }
+     res.status(200).json({success: 'true'})
+    });
+  }
+
+
+
   public addNewAccount(req: Request, res: Response) {
     res.setHeader("Content-Type", "application/json");
     let newAccount = new Account(req.body);

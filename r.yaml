@@ -1,0 +1,19 @@
+apiVersion: authorization.openshift.io/v1
+groupNames: null
+kind: RoleBinding
+metadata:
+  creationTimestamp: 2019-10-06T19:28:27Z
+  labels:
+    app: jenkins-ephemeral
+    template: jenkins-ephemeral-template
+  name: jenkins
+  namespace: devops
+roleRef:
+  kind: Role
+  name: jenkins
+  apiGroup: authorization.openshift.io/v1
+subjects:
+- kind: ServiceAccount
+  name: jenkins
+userNames:
+- system:serviceaccount:devops:jenkins

@@ -109,7 +109,7 @@ buildconfig:
   secret2: $(head -c 24 /dev/random | base64)
 
 routes:
-  host: "account-svc-kubeapp.apps.9.30.210.207.nip.io"
+  host: "account-svc-devops.clusterhouse-c4afa43ec152e314f7072ba02bde2f76-0001.us-south.containers.appdomain.cloud"
   targetPort: 7000
   name: account-svc
   weight: 100

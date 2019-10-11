@@ -4,6 +4,7 @@ metadata:
   name: "{{ .Values.metadata.name }}"
   labels:
     app: "{{ .Values.metadata.name }}"
+  namespace: "{{ .Values.namespace }}"
 spec:
   replicas: {{ .Values.replicaCount }}
   triggers:

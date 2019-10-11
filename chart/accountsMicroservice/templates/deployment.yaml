@@ -15,6 +15,7 @@ spec:
      name: {{ .Values.metadata.name }} 
      annotations:
       sidecar.istio.io/inject: "true"
+      traffic.sidecar.istio.io/excludeOutboundIPRanges: 0.0.0.0/0   
      labels:
        app: {{ .Values.metadata.label }} 
    spec:

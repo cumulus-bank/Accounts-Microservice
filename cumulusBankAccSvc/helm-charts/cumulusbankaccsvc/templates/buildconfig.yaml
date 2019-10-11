@@ -6,6 +6,7 @@ metadata:
     app: "{{ .Values.metadata.name }}"
   annotations:
     openshift.io/generated-by: OpenShiftWebConsole
+  namespace: "{{ .Values.namespace }}"
 spec:
   output:
     to:

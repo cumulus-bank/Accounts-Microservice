@@ -97,6 +97,30 @@ class ListingMongoController {
       },
       this.accountController.deleteAccount
     );
+
+    this.router.post(
+      "/customerfeed",
+      (req: Request, res: Response, next: NextFunction) => {
+        next();
+      },
+      this.accountController.customerfeed
+    );
+
+    this.router.post(
+      "/ledgerfeed",
+      (req: Request, res: Response, next: NextFunction) => {
+        next();
+      },
+      this.accountController.ledgerfeed
+    );
+
+    this.router.post(
+      "/utilitybill",
+      (req: Request, res: Response, next: NextFunction) => {
+        next();
+      },
+      this.accountController.utilitybill
+    );
   }
 }
 

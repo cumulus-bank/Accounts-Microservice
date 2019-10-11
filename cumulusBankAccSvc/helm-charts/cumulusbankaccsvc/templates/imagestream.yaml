@@ -6,3 +6,4 @@ metadata:
     name: "{{ .Values.image.imageName }}"
     annotations:
         description: Keeps track of changes in the application image
+    namespace: "{{ .Values.namespace }}"
