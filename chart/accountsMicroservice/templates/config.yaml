@@ -5,4 +5,4 @@ metadata:
   namespace: {{ .Values.namespace }} 
 data:
   MONGOPORT: '27017'
-  HOSTNAMEMONGODB: 'md-cumulus-cumulusbank-mongodbsvc-gcp1-mongo.cumulusbank'
+  HOSTNAMEMONGODB: 'md-bank-bank-mongodbsvc-ocp1-m.cumulusbank'
