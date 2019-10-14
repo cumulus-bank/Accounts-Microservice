@@ -20,7 +20,7 @@
 
 ## Install Operator on Openshift
 
-1. clone the repo
+1. clone the repoo
 ```
 $ git clone https://github.com/cumulus-bank/Accounts-Microservice.git
 ```
